@@ -8,7 +8,7 @@ int main(void) {
 	int *a1 = &a;
 	int **a2 = &a1;
 
-	int result = nIndirections((void *)a2, 2);
+	int result = nIndirections(a2, 2);
 	printf("The value stored in memory is: %d\n", result);
 
 	return 0;
@@ -21,12 +21,12 @@ int main(void) {
  *  @return int Value stored in memory.
  */
 int nIndirections(void *initial, unsigned int indirections) {
+	/*
+	 * 1) (int **)initial Casts a pointer to a pointer of type int.
+	 * 2) *(int **)initial Obtains the address pointed to by the next pointer.
+	 */
 	while(indirections > 1) {
-		/*
-		 * 1) *(int *)initial Dereferences a pointer to int.
-		 * 2) (void *)(*(int *)initial) Casts the result to void pointer.
-		 */
-		initial = (void *)(*(int *)initial);
+		initial = *(int **)initial;
 		--indirections;
 	}
 	return *(int *)initial;
