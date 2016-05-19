@@ -45,14 +45,15 @@ int genericPlus(const void *array, size_t structSize, size_t fieldOffset, size_t
 	size_t i;
 	int result;
 
+	/*
+	 * 1) (size_t)array + fieldOffset Adds an offset to the beginning of the structure.
+	 * 2) *(int *)((size_t)array + fieldOffset) Dereferences the pointer to the member.
+	 * 3) (size_t)array + structSize Adds an size to point to the following structure.
+	 */
 	for (i = 0, result = 0; i < amountOfElements; ++i) {
-		/*
-		 * 1) (size_t)array + fieldOffset Adds an offset to the beginning of the structure.
-		 * 2) *(int *)((size_t)array + fieldOffset) Dereferences the pointer to the member.
-		 * 3) (size_t)array + structSize Adds an size to point to the following structure.
-		 */
 		result = result + *(int *)((size_t)array + fieldOffset);
 		array = (void *)((size_t)array + structSize);
 	}
 
 	return result;
+}
