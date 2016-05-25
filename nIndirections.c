@@ -3,7 +3,8 @@
 /* Function prototype */
 int nIndirections(void *initial, unsigned int indirections);
 
-int main(void) {
+int main(void)
+{
 	int a = 3;
 	int *a1 = &a;
 	int **a2 = &a1;
@@ -20,14 +21,15 @@ int main(void) {
  *  @param indirections Amount of indirection to be performed on the pointer.
  *  @return int Value stored in memory.
  */
-int nIndirections(void *initial, unsigned int indirections) {
+int nIndirections(void *initial, unsigned int indirections)
+{
 	/*
-	 * 1) (int **)initial Casts a pointer to a pointer of type int.
+	 * 1) (int **)initial Casts the void pointer to a pointer to pointer of type int.
 	 * 2) *(int **)initial Obtains the address pointed to by the next pointer.
 	 */
-	while(indirections > 1) {
+	for(; indirections > 1; --indirections) {
 		initial = *(int **)initial;
-		--indirections;
 	}
+
 	return *(int *)initial;
 }
