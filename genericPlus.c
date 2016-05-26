@@ -14,20 +14,21 @@ struct S {
 	char field4;
 };
 
-int main(void) {
+int main(void)
+{
 	int result;
-	struct S array[3];
+	struct S *array[3];
 	struct S myStruct1, myStruct2, myStruct3;
 
-	array[0] = myStruct1;
-	array[1] = myStruct2;
-	array[2] = myStruct3;
+	array[0] = &myStruct1;
+	array[1] = &myStruct2;
+	array[2] = &myStruct3;
 
-	array[0].field1 = 11;
-	array[1].field1 = 22;
-	array[2].field1 = 33;
+	array[0]->field1 = 11;
+	array[1]->field1 = 22;
+	array[2]->field1 = 33;
 
-	result = genericPlus(&array[0], sizeof(struct S), offsetOf(struct S, field1), sizeof(array)/sizeof(array[0]));
+	result = genericPlus(array[0], sizeof(struct S), offsetOf(struct S, field1), sizeof(array)/sizeof(array[0]));
 	printf("The result is: %d\n", result);
 
 	return 0;
@@ -41,7 +42,8 @@ int main(void) {
  *  @param amountOfElements Number of array elements.
  *  @return int Sum of the indicated fields.
  */
-int genericPlus(const void *array, size_t structSize, size_t fieldOffset, size_t amountOfElements) {
+int genericPlus(const void *array, size_t structSize, size_t fieldOffset, size_t amountOfElements)
+{
 	size_t i;
 	int result;
 
