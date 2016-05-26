@@ -17,18 +17,13 @@ struct S {
 int main(void)
 {
 	int result;
-	struct S *array[3];
-	struct S myStruct1, myStruct2, myStruct3;
+	struct S array[3];
 
-	array[0] = &myStruct1;
-	array[1] = &myStruct2;
-	array[2] = &myStruct3;
+	array[0].field1 = 27;
+	array[1].field1 = 11;
+	array[2].field1 = 70;
 
-	array[0]->field1 = 11;
-	array[1]->field1 = 22;
-	array[2]->field1 = 33;
-
-	result = genericPlus(array[0], sizeof(struct S), offsetOf(struct S, field1), sizeof(array)/sizeof(array[0]));
+	result = genericPlus(&array[0], sizeof(struct S), offsetOf(struct S, field1), sizeof(array)/sizeof(array[0]));
 	printf("The result is: %d\n", result);
 
 	return 0;
