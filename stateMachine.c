@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <ctype.h>  /* Provides isdigit() */
+#include <stdlib.h> /* Provides atoi() */
+#include <string.h> /* Provides strlen() */
 
 /* Number of rows of the "transitionTable" matrix */
 #define STATES_AMOUNT 5
@@ -44,27 +46,49 @@ const enum State transitionTable[STATES_AMOUNT][STIMULUS_AMOUNT] = {
 /* Function prototype */
 void stimulate(struct FSM* fsm, enum Stimulus stimulus);
 
-int main(void) {
-	int option;
-	struct FSM *fsm;
+int main(void)
+{
+	struct FSM fsm;
+	char userInput[32];
+	unsigned int i;
+	int invalidInput;
+	int finishProgram;
+	int stimulusToSend;
+	const int FINISH = 9;
 
-	fsm = malloc(sizeof(struct FSM));
-	fsm->currentState = Off;
+	finishProgram = 0;
+	fsm.currentState = Off;
 
-	do {
-		scanf("%d", &option);
-		switch(option) {
-			case 0: 
-			case 1:
-			case 2:
-			case 3:
-				stimulate(fsm, option);
-				break;
-			default:
-				printf("The stimulus does not exist!\n");
-				break;
+	while(!finishProgram) {
+		/* Verifies that user input only contains digits */
+		do {
+			invalidInput = 0;
+			fgets(userInput, sizeof(userInput), stdin);
+			/* The '-1' below is due to '\n' of the end */
+			for(i = 0; i < strlen(userInput) - 1; ++i) {
+				if(!isdigit(userInput[i])) {
+					printf("The input is invalid!\n");
+					invalidInput = 1;
+					break;
+				}
+			}
+		} while(invalidInput);
+
+		/* Converts the user input into a integer */
+		stimulusToSend = atoi(userInput);
+		/* Verifies the output option */
+		finishProgram = (stimulusToSend == FINISH);
+
+		if(stimulusToSend < STIMULUS_AMOUNT) {
+			stimulate(&fsm, stimulusToSend);
 		}
-	} while(option != 9);
+		else if(finishProgram){
+			printf("Program ended!\n");
+		}
+		else {
+			printf("The stimulus does not exist!\n");
+		}
+	}
 
 	return 0;
 }
@@ -75,7 +99,8 @@ int main(void) {
  *  @param stimulus Stimulus to send to the machine.
  *  @return void Does not return any value.
  */
-void stimulate(struct FSM *fsm, enum Stimulus stimulus) {
+void stimulate(struct FSM *fsm, enum Stimulus stimulus)
+{
 	printf("[%s] ----- <%s>", stateNames[fsm->currentState], stimulusNames[stimulus]);
 	fsm->currentState = transitionTable[fsm->currentState][stimulus];
 	printf(" -----> [%s]\n", stateNames[fsm->currentState]);
