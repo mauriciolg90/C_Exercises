@@ -1,14 +1,10 @@
 #include <stdio.h>
 
-/* Number of rows of the "languagesTable" matrix */
-#define LANGUAGES_AMOUNT 2
-/* Number of columns of the "languagesTable" matrix */
-#define MESSAGES_AMOUNT 3
-
 /* Enum that represents languages */
 enum Languages {
 	English,
-	Spanish
+	Spanish,
+	LanguagesAmount
 };
 
 /* Enum that represents messages */
@@ -18,11 +14,16 @@ enum Messages {
 	FileNotFound,
 	HolaMundo,
 	SinMemoria,
-	ArchivoNoEncontrado
+	ArchivoNoEncontrado,
+	MessagesAmount
 };
 
-/* Matrix with the corresponding texts */
-const char *languagesTable[LANGUAGES_AMOUNT][MESSAGES_AMOUNT] = {
+/*
+ * "languagesTable" is the matrix with the corresponding texts.
+ * "LanguagesAmount" is the number of rows of the matrix.
+ * "MessagesAmount / LanguagesAmount" is the number of columns.
+ */
+const char *languagesTable[LanguagesAmount][MessagesAmount / LanguagesAmount] = {
 	{"HelloWorld", "OutOfMemory", "FileNotFound"},
 	{"HolaMundo", "SinMemoria", "ArchivoNoEncontrado"}
 };
@@ -30,7 +31,8 @@ const char *languagesTable[LANGUAGES_AMOUNT][MESSAGES_AMOUNT] = {
 /* Function prototype */
 const char *getMessage(enum Languages language, enum Messages message);
 
-int main(void) {
+int main(void)
+{
 	const char *translatedMessage;
 
 	translatedMessage = getMessage(Spanish, OutOfMemory);
@@ -44,7 +46,8 @@ int main(void) {
  *  @param message Message to translate.
  *  @return char Translated message.
  */
-const char *getMessage(enum Languages language, enum Messages message) {
+const char *getMessage(enum Languages language, enum Messages message)
+{
 	return languagesTable[language][message];
 }
 
